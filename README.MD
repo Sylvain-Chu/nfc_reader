@@ -11,7 +11,7 @@ This project allows you to read NFC badges using the ACR122U reader and writes t
 ### Installation
 
 1. **Download the executable**:
-   - Go to the [releases page](https://github.com/<your-username>/<your-repo>/releases) to download the latest version of `nfc_reader.exe`.
+   - Go to the [releases page](https://github.com/Sylvain-Chu/nfc_reader/releases/tag/v1.0.0) to download the latest version of `nfc_reader.exe`.
 
 2. **Run the executable**:
    - Double-click `nfc_reader.exe` to start the program.
