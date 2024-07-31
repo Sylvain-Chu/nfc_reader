@@ -1,6 +1,7 @@
 import logging
 import time
 import pyautogui
+import pyperclip
 from smartcard.System import readers
 from smartcard.util import toHexString
 from smartcard.Exceptions import NoCardException, CardConnectionException
@@ -25,6 +26,8 @@ def read_nfc():
         except (NoCardException, CardConnectionException):
             return
 
+        time.sleep(0.1)
+
         get_uid = [0xFF, 0xCA, 0x00, 0x00, 0x00]
         try:
             data, sw1, sw2 = connection.transmit(get_uid)
@@ -32,10 +35,14 @@ def read_nfc():
                 badge_id = toHexString(data)
                 if badge_id != last_badge_id:
                     logging.info(f"Badge ID: {badge_id}")
-                    pyautogui.typewrite(badge_id)  
-                    pyautogui.press('enter') 
-                    logging.info("Badge ID written at cursor position.")
+                    pyautogui.write(badge_id)
+                    pyautogui.press('enter')
+                    pyperclip.copy(badge_id)
+                    logging.info("Badge ID written at cursor position and copied to clipboard.")
                     last_badge_id = badge_id
+                else:
+                    pyperclip.copy(badge_id)
+                    logging.info(f"Badge ID {badge_id} already read. Copied to clipboard.")
             else:
                 logging.error(f"Failed to read badge. SW1: {sw1}, SW2: {sw2}")
         except CardConnectionException as e:
@@ -48,7 +55,7 @@ def main():
     try:
         while True:
             read_nfc()
-            time.sleep(1.5)
+            time.sleep(1.5)  
     except KeyboardInterrupt:
         logging.info("NFC reader stopped by user.")
 
